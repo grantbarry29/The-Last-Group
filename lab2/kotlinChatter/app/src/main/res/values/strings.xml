@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">kotlinChatter</string>
-    <string name="post">Post</string>
-    <string name="send">Send</string>
-    <string name="username">jakoba</string>
-    <string name="message">Some short sample text.</string>
-    <string name="title_activity_maps">MapsActivity</string>
-    <string name="google_maps_key">AIzaSyADyV5EH_YK1hs_5J3z4vOjqxswhuXxUTU</string>
-</resources>
