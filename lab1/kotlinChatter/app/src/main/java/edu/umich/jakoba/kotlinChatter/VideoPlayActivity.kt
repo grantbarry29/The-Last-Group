@@ -2,23 +2,19 @@ package edu.umich.jakoba.kotlinChatter
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View.inflate
 import android.widget.MediaController
+import androidx.appcompat.resources.Compatibility.Api21Impl.inflate
+import edu.umich.jakoba.kotlinChatter.databinding.ActivityMainBinding.inflate
 import edu.umich.jakoba.kotlinChatter.databinding.ActivityVideoPlayBinding
 
 class VideoPlayActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val view = ActivityVideoPlayBinding.inflate(layoutInflater)
-        setContentView(view.root)
 
-        view.videoView.setVideoURI(intent.getParcelableExtra("VIDEO_URI"))
+        setContentView(R.layout.final_screen)
 
-        with (MediaController(this)) {
-            setAnchorView(view.videoView)
-            view.videoView.setMediaController(this)
-            view.videoView.setOnPreparedListener { show(0) }
-        }
-        view.videoView.setOnCompletionListener { finish() }
-        view.videoView.start()
+
     }
 }

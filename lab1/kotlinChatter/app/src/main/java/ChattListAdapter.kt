@@ -22,26 +22,19 @@ class ChattListAdapter(context: Context, users: ArrayList<Chatt?>) :
         }) as ListitemChattBinding
 
         getItem(position)?.run {
-            listItemView.usernameTextView.text = username
             listItemView.messageTextView.text = message
-            listItemView.timestampTextView.text = timestamp
             listItemView.root.setBackgroundColor(Color.parseColor(if (position % 2 == 0) "#E0E0E0" else "#EEEEEE"))
 
             // show image
             imageUrl?.let {
                 listItemView.chattImage.setVisibility(View.VISIBLE)
+                listItemView.videoButton.visibility = View.VISIBLE
                 listItemView.chattImage.load(it) {
                     crossfade(true)
                     crossfade(1000)
                 }
-            } ?: run {
-                listItemView.chattImage.setVisibility(View.GONE)
-                listItemView.chattImage.setImageBitmap(null)
-            }
-
-            videoUrl?.let {
-                listItemView.videoButton.visibility = View.VISIBLE
                 listItemView.videoButton.setOnClickListener { v: View ->
+                    // Link to car info page
                     if (v.id == R.id.videoButton) {
                         val intent = Intent(context, VideoPlayActivity::class.java)
                         intent.putExtra("VIDEO_URI", Uri.parse(it))
@@ -49,9 +42,12 @@ class ChattListAdapter(context: Context, users: ArrayList<Chatt?>) :
                     }
                 }
             } ?: run {
+                listItemView.chattImage.setVisibility(View.GONE)
+                listItemView.chattImage.setImageBitmap(null)
                 listItemView.videoButton.visibility = View.INVISIBLE
                 listItemView.videoButton.setOnClickListener(null)
             }
+
         }
 
         return listItemView.root
