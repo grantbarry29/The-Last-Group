@@ -1,0 +1,2 @@
+edu/umich/jakoba/kotlinChatter/BuildConfig.java
+ edu.umich.jakoba.kotlinChatter.BuildConfig
