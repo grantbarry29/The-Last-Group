@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">The Last Group</string>
+    <string name="post">Post</string>
+    <string name="send">Send</string>
+    <string name="username">jakoba</string>
+    <string name="message">Some short sample text.</string>
+    <string name="album">Album</string>
+    <string name="takePicture">CAPTURE</string>
+    <string name="selectPicture">SELECT</string>
+    <string name="noImageText">Select or Capture an image below to identify a vehicle</string>
+    <string name="camera">Camera</string>
+    <string name="video">Video</string>
+    <string name="preview">Image</string>
+    <string name="chattImage">chattImage</string>
+    <string name="videoView">videoView</string>
+
+</resources>
