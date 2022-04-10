@@ -20,6 +20,13 @@
         <entry key="..\:/Users/jakea/Desktop/School/441/final_project/The-Last-Group/lab1/kotlinChatter/app/src/main/res/layout/car_list.xml" value="0.24479166666666666" />
         <entry key="..\:/Users/jakea/Desktop/School/441/final_project/The-Last-Group/lab1/kotlinChatter/app/src/main/res/layout/home_screen.xml" value="0.2677083333333333" />
         <entry key="..\:/Users/jakea/Desktop/School/441/final_project/The-Last-Group/lab1/kotlinChatter/app/src/main/res/layout/listitem_chatt.xml" value="0.2677083333333333" />
+        <entry key="app/src/main/res/layout/activity_description.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_suggest.xml" value="0.484375" />
+        <entry key="app/src/main/res/layout/car_list.xml" value="0.242313705054716" />
+        <entry key="app/src/main/res/layout/final_screen.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/listitem_chatt.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/listitem_suggestion.xml" value="0.2421875" />
       </map>
     </option>
   </component>

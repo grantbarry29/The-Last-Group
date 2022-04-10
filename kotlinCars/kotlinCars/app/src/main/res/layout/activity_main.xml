@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refreshContainer"
+        android:id="@+id/listViewContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toBottomOf="@+id/userPhoto">
 
         <ListView
-            android:id="@+id/chattListView"
+            android:id="@+id/suggestionListView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -26,7 +26,7 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <Button
-        android:id="@+id/retakeButton"
+        android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -36,7 +36,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/homeButton"
+        android:id="@+id/retakeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -53,7 +53,7 @@
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/retakeButton"
+        app:layout_constraintTop_toBottomOf="@+id/backButton"
         tools:src="@tools:sample/avatars"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 

@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.provider.CalendarContract
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -30,17 +31,30 @@ class HomeActivity: AppCompatActivity() {
     private lateinit var forCameraResult: ActivityResultLauncher<Uri>
     private lateinit var view: ActivityHomeBinding
 
+
+
     // Move to jakob's page
     private fun toSelection(view: View?) {
-        var intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("imageUri", viewState.imageUri.toString())
+        var intent = Intent(this, SuggestActivity::class.java)
+        intent.data = viewState.imageUri
         startActivity(intent)
     }
 
     // Disable button if no permission granted
     private fun markButtonDisable(button: ImageButton) {
         button?.isEnabled = false
-        button?.alpha = 0.4f
+        button?.alpha = 0.8f
+    }
+
+    // Enable continue button
+    private fun disableIdentifyButton() {
+        view.identifyButton?.isEnabled = false
+        view.identifyButton?.alpha = 0.8f
+    }
+
+    private fun enableIdentifyButton () {
+        view.identifyButton?.isEnabled = true
+        view.identifyButton?.alpha = 1f
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +62,17 @@ class HomeActivity: AppCompatActivity() {
             view = ActivityHomeBinding.inflate(layoutInflater)
             view.root.setBackgroundColor(Color.parseColor("#E0E0E0"))
             setContentView(view.root)
+            disableIdentifyButton()
+
+
+            if (intent.data != null){
+                viewState.imageUri = intent.data
+                viewState.imageUri?.let { view.previewImage.display(it) }
+                view.noImageText.isInvisible = true
+                enableIdentifyButton()
+            }
+
+
 
             // Listener for moving to Jakob's page
             view.identifyButton.setOnClickListener {
@@ -121,6 +146,7 @@ class HomeActivity: AppCompatActivity() {
                             viewState.imageUri = it
                             viewState.imageUri?.let { view.previewImage.display(it) }
                             view.noImageText.isInvisible = true
+                            enableIdentifyButton()
                         }
                     }
                 }
