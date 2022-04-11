@@ -10,6 +10,7 @@ import android.view.View
 
 import android.widget.ArrayAdapter
 import coil.load
+import edu.umich.jakoba.kotlinChatter.R
 
 import edu.umich.jakoba.kotlinChatter.databinding.ListitemSuggestionBinding
 
@@ -37,11 +38,17 @@ class AdapterSuggestion(context: Context, suggestions: ArrayList<Suggestion?>) :
 
         getItem(position)?.run {
 
+
+
+
+
             // set text
             listItemView.suggestionText.text = carYear + " " + carMake + " " + carModel
 
+            // set background border
             // set swapping background color
-            listItemView.root.setBackgroundColor(Color.parseColor(if (position % 2 == 0) "#E0E0E0" else "#EEEEEE"))
+            listItemView.root.setBackgroundColor(Color.parseColor(if (position % 2 == 0) "#E2E2E2" else "#D9D9D9"))
+            listItemView.root.clipToOutline = true
 
             // show image
             carImageUri?.let {

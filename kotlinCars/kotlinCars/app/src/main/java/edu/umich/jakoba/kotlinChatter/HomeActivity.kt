@@ -10,7 +10,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.provider.CalendarContract
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -72,6 +71,12 @@ class HomeActivity: AppCompatActivity() {
                 enableIdentifyButton()
             }
 
+            // Add logo to action bar
+            this.supportActionBar?.setDisplayShowHomeEnabled(true)
+            this.supportActionBar?.setLogo(R.drawable.logo1)
+            this.supportActionBar?.setDisplayUseLogoEnabled(true)
+            this.supportActionBar?.setDisplayShowTitleEnabled(true)
+
 
 
             // Listener for moving to Jakob's page
@@ -128,6 +133,7 @@ class HomeActivity: AppCompatActivity() {
                     } ?: run { Log.d("Pick media", "failed") }
                 })
             // Set album button listener
+            // view.albumButton.setBackgroundColor(Color.parseColor("#6200EE"))
             view.albumButton.setOnClickListener {
                 forPickedResult.launch("*/*")
             }

@@ -50,6 +50,9 @@ class SuggestActivity: AppCompatActivity() {
 
         // remove back arrow
         this.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        this.supportActionBar?.setDisplayShowHomeEnabled(true)
+        this.supportActionBar?.setLogo(R.drawable.logo1)
+        this.supportActionBar?.setDisplayUseLogoEnabled(true)
 
 
         // Return to home page and clear image
