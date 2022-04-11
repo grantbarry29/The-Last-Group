@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModel
 import edu.umich.jakoba.kotlinChatter.databinding.ActivityHomeBinding
 import Suggestion
 import edu.umich.jakoba.kotlinChatter.databinding.ActivitySuggestBinding
+import SuggestionStore
 
 class SuggestActivity: AppCompatActivity() {
 
@@ -66,8 +67,16 @@ class SuggestActivity: AppCompatActivity() {
             toHome(view.root)
         }
 
-        //  *****REPLACE WITH API CALL******
-        // Make api call and populate suggestions array
+        // Actual API call returns list of suggestions
+        /*var msg = "Identifying vehicle..."
+        var suggestions = SuggestionStore.postCar(applicationContext, viewState.imageUri) {
+            runOnUiThread {
+                toast(msg)
+            }
+        }*/
+
+
+        // Fake API call for testing
         var i = 0
         while (i < 10 ){
             var tempSuggestion = Suggestion()
@@ -80,16 +89,6 @@ class SuggestActivity: AppCompatActivity() {
             i++
         }
 
-        // Create intents for each suggestion to switch to
-        if (suggestions != null) {
-            for (suggestion in suggestions) {
-                intent.data = suggestion?.carImageUri
-                intent.putExtra("carCost", suggestion?.carCost)
-                intent.putExtra("carMake", suggestion?.carMake)
-                intent.putExtra("carModel", suggestion?.carModel)
-                intent.putExtra("carYear", suggestion?.carYear)
-            }
-        }
 
         // Populate list view with suggestions
         view.suggestionListView.adapter = AdapterSuggestion(this@SuggestActivity,  suggestions)

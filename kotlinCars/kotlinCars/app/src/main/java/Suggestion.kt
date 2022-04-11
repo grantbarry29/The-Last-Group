@@ -22,6 +22,7 @@ class Suggestion {
     var carModel: String? = null
     var carYear: String? = null
     var carCost: String? = null
+
 }
 
 class AdapterSuggestion(context: Context, suggestions: ArrayList<Suggestion?>) :
@@ -37,10 +38,6 @@ class AdapterSuggestion(context: Context, suggestions: ArrayList<Suggestion?>) :
         }) as ListitemSuggestionBinding
 
         getItem(position)?.run {
-
-
-
-
 
             // set text
             listItemView.suggestionText.text = carYear + " " + carMake + " " + carModel
