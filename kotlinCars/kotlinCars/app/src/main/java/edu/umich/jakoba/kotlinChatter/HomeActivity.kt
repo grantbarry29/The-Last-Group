@@ -148,11 +148,12 @@ class HomeActivity: AppCompatActivity() {
                                     // delete uncropped photo taken for posting
                                     contentResolver.delete(this, null, null)
                                 }
+                                viewState.imageUri = it
+                                viewState.imageUri?.let { view.previewImage.display(it) }
+                                view.noImageText.isInvisible = true
+                                enableIdentifyButton()
                             }
-                            viewState.imageUri = it
-                            viewState.imageUri?.let { view.previewImage.display(it) }
-                            view.noImageText.isInvisible = true
-                            enableIdentifyButton()
+
                         }
                     }
                 }
@@ -170,8 +171,9 @@ class HomeActivity: AppCompatActivity() {
                     if (success) {
 
                         doCrop(cropIntent)
-                        //viewState.imageUri?.let { view.previewImage.display(it) }
+                       // viewState.imageUri?.let { view.previewImage.display(it) }
                     } else {
+                       // viewState.imageUri
                         Log.d("TakePicture", "failed")
                     }
                 }
