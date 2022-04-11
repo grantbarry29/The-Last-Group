@@ -1,24 +1,15 @@
 package edu.umich.jakoba.kotlinChatter
 
 import AdapterSuggestion
-import android.content.ComponentName
-import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModel
-import edu.umich.jakoba.kotlinChatter.databinding.ActivityHomeBinding
 import Suggestion
 import edu.umich.jakoba.kotlinChatter.databinding.ActivitySuggestBinding
 import SuggestionStore
@@ -35,6 +26,12 @@ class SuggestActivity: AppCompatActivity() {
     // Move to home page and send image back
     private fun toHome(view: View?) {
         var intent = Intent(this, HomeActivity::class.java)
+        intent.data = viewState.imageUri
+        startActivity(intent)
+    }
+
+    private fun retry(view: View?) {
+        var intent = Intent(this, SuggestActivity::class.java)
         intent.data = viewState.imageUri
         startActivity(intent)
     }
@@ -66,6 +63,11 @@ class SuggestActivity: AppCompatActivity() {
         view.backButton.setOnClickListener {
             toHome(view.root)
         }
+
+        view.retryButton.setOnClickListener {
+            retry(view.root)
+        }
+
 
         // Actual API call returns list of suggestions
         /*var msg = "Identifying vehicle..."

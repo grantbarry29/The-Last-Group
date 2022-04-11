@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -64,7 +63,6 @@ class DescriptionActivity: AppCompatActivity() {
 
 class DescriptionViewState: ViewModel() {
     var imageUri: Uri? = null
-    var carImageUri: Uri? = null
     var carMake: String? = null
     var carModel: String? = null
     var carYear: String? = null
