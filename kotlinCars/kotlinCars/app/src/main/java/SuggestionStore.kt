@@ -13,12 +13,13 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import kotlin.reflect.full.declaredMemberProperties
 
 object SuggestionStore {
-private const val serverUrl = "https://35.185.48.28/"
+private const val serverUrl = "https://18.218.44.128/"
 private val nFields = Suggestion::class.declaredMemberProperties.size
+    val cars: ArrayList<Suggestion?> = ArrayList()
 fun postCar(context: Context, imageUri: Uri?,
             completion: (String) -> Unit) {
 
-    val cars: ArrayList<Suggestion?> = ArrayList()
+
     val client = OkHttpClient()
 
     // Add image to post form
@@ -26,7 +27,7 @@ fun postCar(context: Context, imageUri: Uri?,
     imageUri?.run {
         toFile(context)?.let {
             mpFD.addFormDataPart(
-                "image", "carImage",
+                "image", "image",
                 it.asRequestBody("image/jpeg".toMediaType())
             )
         } ?: context.toast("Unsupported image format")
@@ -34,14 +35,15 @@ fun postCar(context: Context, imageUri: Uri?,
 
 
     val request = Request.Builder()
-        .url(serverUrl + "postCars/")
+        .url(serverUrl + "postcar/")
         .post(mpFD.build())
         .build()
 
+    Log.e("request", request.toString())
 
     client.newCall(request).enqueue(object : Callback {
         override fun onFailure(call: Call, e: IOException) {
-            Log.e("getCars", "Failed GET request")
+            Log.e("postcar", "Failed POST request")
         }
 
         override fun onResponse(call: Call, response: Response) {
@@ -55,6 +57,7 @@ fun postCar(context: Context, imageUri: Uri?,
                 cars.clear()
                 for (i in 0 until carsReceived.length()) {
                     val carEntry = carsReceived[i] as JSONArray
+                    Log.e("car", carEntry.toString())
                     if (carEntry.length() == nFields) {
                         var newSuggestion = Suggestion()
                         newSuggestion.carImageUri = Uri.parse(carEntry[0].toString())

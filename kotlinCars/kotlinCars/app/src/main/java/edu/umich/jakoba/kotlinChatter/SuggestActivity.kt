@@ -70,16 +70,17 @@ class SuggestActivity: AppCompatActivity() {
 
 
         // Actual API call returns list of suggestions
-        /*var msg = "Identifying vehicle..."
-        var suggestions = SuggestionStore.postCar(applicationContext, viewState.imageUri) {
+        var msg = "Identifying vehicle..."
+        SuggestionStore.postCar(applicationContext, viewState.imageUri) {
             runOnUiThread {
                 toast(msg)
             }
-        }*/
+        }
+        var suggestions = SuggestionStore.cars
 
 
         // Fake API call for testing
-        var i = 0
+        /*var i = 0
         while (i < 10 ){
             var tempSuggestion = Suggestion()
             tempSuggestion.carCost = "$25000 - $35000"
@@ -89,7 +90,7 @@ class SuggestActivity: AppCompatActivity() {
             tempSuggestion.carImageUri = viewState.imageUri
             suggestions?.add(tempSuggestion)
             i++
-        }
+        }*/
 
 
         // Populate list view with suggestions
