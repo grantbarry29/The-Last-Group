@@ -42,7 +42,7 @@ class HomeActivity: AppCompatActivity() {
     // Disable button if no permission granted
     private fun markButtonDisable(button: ImageButton) {
         button?.isEnabled = false
-        button?.alpha = 0.8f
+        button?.alpha = .8f
     }
 
     // Enable continue button
@@ -84,7 +84,6 @@ class HomeActivity: AppCompatActivity() {
                 if (view.noImageText.isInvisible) {
                     toSelection(view.root)
                 }
-
             }
 
             // Permissions request
