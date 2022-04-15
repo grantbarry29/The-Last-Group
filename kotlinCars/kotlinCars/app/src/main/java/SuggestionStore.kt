@@ -1,6 +1,7 @@
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import androidx.databinding.ObservableArrayList
 import okhttp3.*
 import okio.IOException
 import org.json.JSONArray
@@ -10,17 +11,23 @@ import edu.umich.jakoba.kotlinChatter.toFile
 import edu.umich.jakoba.kotlinChatter.toast
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.asRequestBody
+import java.util.concurrent.TimeUnit
+import kotlin.math.roundToInt
 import kotlin.reflect.full.declaredMemberProperties
 
 object SuggestionStore {
 private const val serverUrl = "https://18.218.44.128/"
 private val nFields = Suggestion::class.declaredMemberProperties.size
-    val cars: ArrayList<Suggestion?> = ArrayList()
+    val suggestions = ObservableArrayList<Suggestion?>()
 fun postCar(context: Context, imageUri: Uri?,
             completion: (String) -> Unit) {
 
-
-    val client = OkHttpClient()
+    suggestions.clear()
+    val client = OkHttpClient().newBuilder()
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .build()
 
     // Add image to post form
     val mpFD = MultipartBody.Builder().setType(MultipartBody.FORM)
@@ -42,37 +49,53 @@ fun postCar(context: Context, imageUri: Uri?,
     Log.e("request", request.toString())
 
     client.newCall(request).enqueue(object : Callback {
+
         override fun onFailure(call: Call, e: IOException) {
             Log.e("postcar", "Failed POST request")
         }
 
         override fun onResponse(call: Call, response: Response) {
             if (response.isSuccessful) {
+                Log.e("response", response.toString())
                 val carsReceived = try {
-                    JSONObject(response.body?.string() ?: "").getJSONArray("cars")
+                    JSONObject(response.body?.string() ?: "").getJSONArray("classification")
                 } catch (e: JSONException) {
                     JSONArray()
                 }
+                Log.e("cars: ", carsReceived.toString())
 
-                cars.clear()
+                suggestions.clear()
                 for (i in 0 until carsReceived.length()) {
-                    val carEntry = carsReceived[i] as JSONArray
-                    Log.e("car", carEntry.toString())
-                    if (carEntry.length() == nFields) {
-                        var newSuggestion = Suggestion()
-                        newSuggestion.carImageUri = Uri.parse(carEntry[0].toString())
-                        newSuggestion.carMake = carEntry[1].toString()
-                        newSuggestion.carModel = carEntry[2].toString()
-                        newSuggestion.carYear = carEntry[3].toString()
-                        newSuggestion.carCost = carEntry[4].toString()
-                        cars.add(newSuggestion)
-                    } else {
-                        Log.e("get cars",
-                            "Received unexpected number of fields " + carEntry.length()
-                                .toString() + " instead of " + nFields.toString()
-                        )
+                    val carEntry = carsReceived[i]
+                    val split = carEntry.toString().split(",")
+                    val carName = split[0]
+                    var prob = split[1].removeRange(0,5)
+                    prob = prob.trimStart()
+                    while (prob.length > 7) {
+                        prob = prob.dropLast(1)
                     }
+                    while (prob.length > 4) {
+                        prob = prob.drop(1)
+                    }
+                    //prob = prob.removeRange(4, prob.length-4)
+                    if (prob.get(0) == '0') {
+                        prob = ((prob.toDouble() * 100).roundToInt()).toString()
+                    } else {
+                        prob = "0"
+                    }
+
+
+                    //val carEntry = carsReceived[i] as JSONArray
+                    Log.e("car", carEntry.toString())
+                    Log.e("carName", carName)
+                    Log.e("prob", prob)
+                    var newSuggestion = Suggestion()
+                    newSuggestion.carName = carName
+                    newSuggestion.probability = prob
+                    suggestions.add(newSuggestion)
+
                 }
+
             }
         }
     })

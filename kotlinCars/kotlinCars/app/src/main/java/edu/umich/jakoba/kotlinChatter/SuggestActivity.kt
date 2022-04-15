@@ -13,6 +13,11 @@ import androidx.lifecycle.ViewModel
 import Suggestion
 import edu.umich.jakoba.kotlinChatter.databinding.ActivitySuggestBinding
 import SuggestionStore
+import SuggestionStore.suggestions
+import android.view.View.GONE
+import android.widget.Adapter
+import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableList
 
 class SuggestActivity: AppCompatActivity() {
 
@@ -20,8 +25,10 @@ class SuggestActivity: AppCompatActivity() {
     private lateinit var forCropResult: ActivityResultLauncher<Intent>
     private lateinit var forCameraResult: ActivityResultLauncher<Uri>
     private lateinit var view: ActivitySuggestBinding
-    private val suggestions: ArrayList<Suggestion?> = ArrayList()
+    private lateinit var SuggestionListAdapter: AdapterSuggestion
+    //private val suggestions: ArrayList<Suggestion?> = ArrayList()
     private val suggestionIntents: ArrayList<Intent>? = null
+    // Create listview adapter
 
     // Move to home page and send image back
     private fun toHome(view: View?) {
@@ -67,6 +74,10 @@ class SuggestActivity: AppCompatActivity() {
         view.retryButton.setOnClickListener {
             retry(view.root)
         }
+        SuggestionListAdapter = AdapterSuggestion(this@SuggestActivity, suggestions)
+        view.suggestionListView.adapter = SuggestionListAdapter
+        suggestions.addOnListChangedCallback(propertyObserver)
+
 
 
         // Actual API call returns list of suggestions
@@ -76,25 +87,6 @@ class SuggestActivity: AppCompatActivity() {
                 toast(msg)
             }
         }
-        var suggestions = SuggestionStore.cars
-
-
-        // Fake API call for testing
-        /*var i = 0
-        while (i < 10 ){
-            var tempSuggestion = Suggestion()
-            tempSuggestion.carCost = "$25000 - $35000"
-            tempSuggestion.carMake = "Tesla"
-            tempSuggestion.carModel = "Model 3"
-            tempSuggestion.carYear = "2015-2020"
-            tempSuggestion.carImageUri = viewState.imageUri
-            suggestions?.add(tempSuggestion)
-            i++
-        }*/
-
-
-        // Populate list view with suggestions
-        view.suggestionListView.adapter = AdapterSuggestion(this@SuggestActivity,  suggestions)
 
         // Set list view on click to go to description page
         view.suggestionListView.setOnItemClickListener{ parent, view, position, id ->
@@ -105,15 +97,38 @@ class SuggestActivity: AppCompatActivity() {
             var suggestion = suggestions[position]
 
             // Set data to send to intent
-            intent.data = suggestion?.carImageUri
-            intent.putExtra("carCost", suggestion?.carCost)
-            intent.putExtra("carMake", suggestion?.carMake)
-            intent.putExtra("carModel", suggestion?.carModel)
-            intent.putExtra("carYear", suggestion?.carYear)
+            intent.data = Uri.parse(suggestion?.carImageUri)
+            intent.putExtra("carName", suggestion?.carName)
+            intent.putExtra("probability", suggestion?.probability)
 
             startActivity(intent)
         }
 
+    }
+
+    // Property observer to check for api replies
+    private val propertyObserver = object: ObservableList.OnListChangedCallback<ObservableArrayList<Int>>() {
+        override fun onChanged(sender: ObservableArrayList<Int>?) { }
+        override fun onItemRangeChanged(sender: ObservableArrayList<Int>?, positionStart: Int, itemCount: Int) { }
+        override fun onItemRangeInserted(
+            sender: ObservableArrayList<Int>?,
+            positionStart: Int,
+            itemCount: Int
+        ) {
+            runOnUiThread {
+                SuggestionListAdapter.setInvis(view.loadingPanel)
+                SuggestionListAdapter.notifyDataSetChanged()
+            }
+        }
+        override fun onItemRangeMoved(sender: ObservableArrayList<Int>?, fromPosition: Int, toPosition: Int,
+                                      itemCount: Int) { }
+        override fun onItemRangeRemoved(sender: ObservableArrayList<Int>?, positionStart: Int, itemCount: Int) { }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        suggestions.removeOnListChangedCallback(propertyObserver)
     }
 
 

@@ -41,13 +41,11 @@ class DescriptionActivity: AppCompatActivity() {
 
         // set vehicle values
         viewState.carCost = intent.getStringExtra("carCost")
-        view.carCostText.text = viewState.carCost
-        viewState.carMake = intent.getStringExtra("carMake")
-        view.carMakeText.text = viewState.carMake
-        viewState.carModel = intent.getStringExtra("carModel")
-        view.carModelText.text = viewState.carModel
-        viewState.carYear = intent.getStringExtra("carYear")
-        view.carYearText.text = viewState.carYear
+        //view.carCostText.text = viewState.carCost
+        viewState.carName = intent.getStringExtra("carName")
+        view.carMakeText.text = viewState.carName
+        viewState.probability = intent.getStringExtra("probability")
+        view.probabilityText.text = viewState.probability + "% probability"
 
         // Return to home page and clear image
         view.retakeButton.setOnClickListener {
@@ -63,8 +61,7 @@ class DescriptionActivity: AppCompatActivity() {
 
 class DescriptionViewState: ViewModel() {
     var imageUri: Uri? = null
-    var carMake: String? = null
-    var carModel: String? = null
-    var carYear: String? = null
+    var carName: String? = null
     var carCost: String? = null
+    var probability: String? = null
 }
