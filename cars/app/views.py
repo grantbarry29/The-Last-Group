@@ -323,10 +323,10 @@ def postcar(request):
         cur.execute("SELECT price from prices WHERE name = '%s'" % name)
         price = cur.fetchall()
         price_formatted = price[0][0]
-        price.append(price_formatted)
+        prices.append(price_formatted)
 
     response = {}
-    response['text'] = [prices]
+    response['text'] = [text]
     response['image'] = [image]
     response['prices'] = [prices]
     return JsonResponse(response)
