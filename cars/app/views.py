@@ -281,7 +281,6 @@ def postcar(request):
     filename1 = str(count)+".jpeg"
     fs = FileSystemStorage()
     filename = fs.save(filename1, content)
-
     img_width, img_height = 224, 224
 
     model = predict_service.get_model()
@@ -299,6 +298,7 @@ def postcar(request):
     rgb_img = np.expand_dims(rgb_img, 0)
     preds = model.predict(rgb_img)
     text = []
+    image = []
     for i in range(4):
         prob = np.max(preds)
         class_id = np.argmax(preds)
@@ -307,6 +307,10 @@ def postcar(request):
     
         preds = np.delete(preds, class_id)
 
+        path = "https://18.218.44.128/media/" + str(class_id).zfill(4) + ".jpg"
+        image.append(path)
+        
+
     response = {}
-    response['classification'] = text
+    response['classification'] = [text, image]
     return JsonResponse(response)
