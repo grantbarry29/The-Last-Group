@@ -9,6 +9,7 @@ import os, time
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 import random
+import sqlite3
 
 import numpy as np
 import cv2 as cv
@@ -299,6 +300,7 @@ def postcar(request):
     preds = model.predict(rgb_img)
     text = []
     image = []
+    prices = []
     for i in range(4):
         prob = np.max(preds)
         class_id = np.argmax(preds)
@@ -310,7 +312,19 @@ def postcar(request):
         path = "https://18.218.44.128/media/" + str(class_id).zfill(4) + ".jpg"
         image.append(path)
         
+        # Add prices
+        conn = sqlite3.connect('prices.sqlite3')
+        cur = conn.cursor()
+        
+        # Is this car name?
+        name = class_names[class_id][0][0]
+
+        # Grab from sqlite
+        cur.execute("SELECT price from prices WHERE name = '%s'" % name)
+        price = cur.fetchall()
+        price_formatted = price[0][0]
+        price.append(price_formatted)
 
     response = {}
-    response['classification'] = [text, image]
+    response['classification'] = [text, image, prices]
     return JsonResponse(response)
