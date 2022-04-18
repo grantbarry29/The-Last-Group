@@ -326,7 +326,7 @@ def postcar(request):
         prices.append(price_formatted)
 
     response = {}
-    response['text'] = [text]
-    response['image'] = [image]
-    response['prices'] = [prices]
+    response['text'] = text
+    response['image'] = image
+    response['prices'] = prices
     return JsonResponse(response)
