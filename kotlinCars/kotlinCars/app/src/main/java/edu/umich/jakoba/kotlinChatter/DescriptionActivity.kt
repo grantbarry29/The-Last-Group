@@ -4,9 +4,12 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
+import coil.load
 import edu.umich.jakoba.kotlinChatter.databinding.ActivityDescriptionBinding
 
 class DescriptionActivity: AppCompatActivity() {
@@ -37,11 +40,17 @@ class DescriptionActivity: AppCompatActivity() {
 
         // set preview image
         viewState.imageUri = intent.data
-        viewState.imageUri?.let { view.carImage.display(it) }
+        Log.e("descr uri:", viewState.imageUri.toString())
+            view.carImage.load(viewState.imageUri){
+                crossfade(true)
+                crossfade(1000)
+                view.carImage.setVisibility(View.VISIBLE)
+            }
 
         // set vehicle values
         viewState.carCost = intent.getStringExtra("carCost")
-        //view.carCostText.text = viewState.carCost
+        view.carCostText.text = viewState.carCost
+        Log.e("car_cost", viewState.carCost.toString())
         viewState.carName = intent.getStringExtra("carName")
         view.carMakeText.text = viewState.carName
         viewState.probability = intent.getStringExtra("probability")

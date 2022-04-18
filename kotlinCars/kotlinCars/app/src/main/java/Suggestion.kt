@@ -21,8 +21,8 @@ class Suggestion(
                  var carName: String? = null,
                  var carCost: String? = null,
                  var probability: String? = null,
-                 carImageUri: Uri? = null) {
-    var carImageUri: String? by SuggestionPropDelegate(carImageUri.toString())
+                 carImageUri: String? = null) {
+    var carImageUri: String? by SuggestionPropDelegate(carImageUri)
 }
 
 class SuggestionPropDelegate private constructor ():

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -40,15 +41,14 @@ class AdapterSuggestion(context: Context, suggestions: ArrayList<Suggestion?>) :
             listItemView.root.clipToOutline = true
 
             // show image
-            carImageUri?.let {
-                listItemView.suggestionImage.load(it){
-                    crossfade(true)
-                    crossfade(1000)
-                    listItemView.suggestionImage.setVisibility(View.VISIBLE)
-                }
-            } ?: run {
-                listItemView.suggestionImage.setVisibility(View.GONE)
-                listItemView.suggestionImage.setImageBitmap(null)
+            Log.e("uri: ",carImageUri.toString())
+            /*carImageUri?.let {
+
+            }*/
+            listItemView.suggestionImage.load(carImageUri){
+                crossfade(true)
+                crossfade(1000)
+                listItemView.suggestionImage.setVisibility(View.VISIBLE)
             }
 
             // Set on click listener
@@ -59,12 +59,12 @@ class AdapterSuggestion(context: Context, suggestions: ArrayList<Suggestion?>) :
                     var suggestion = suggestions[position]
 
                     // Set data to send to intent
-                   // intent.data = Uri.parse(suggestion?.carImageUri)
+                    intent.data = Uri.parse(suggestion?.carImageUri)
                     intent.putExtra("carName", suggestion?.carName)
+                    intent.putExtra("carCost", suggestion?.carCost)
                     intent.putExtra("probability", suggestion?.probability)
 
                     startActivity(parent.context,intent, Bundle())
-
             }
 
         }

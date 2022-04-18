@@ -14,6 +14,7 @@ import Suggestion
 import edu.umich.jakoba.kotlinChatter.databinding.ActivitySuggestBinding
 import SuggestionStore
 import SuggestionStore.suggestions
+import android.util.Log
 import android.view.View.GONE
 import android.widget.Adapter
 import androidx.databinding.ObservableArrayList
@@ -99,6 +100,8 @@ class SuggestActivity: AppCompatActivity() {
             // Set data to send to intent
             intent.data = Uri.parse(suggestion?.carImageUri)
             intent.putExtra("carName", suggestion?.carName)
+            intent.putExtra("carCost", suggestion?.carCost)
+            Log.e("car_cost", suggestion?.carCost.toString())
             intent.putExtra("probability", suggestion?.probability)
 
             startActivity(intent)

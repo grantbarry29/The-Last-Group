@@ -56,19 +56,35 @@ fun postCar(context: Context, imageUri: Uri?,
 
         override fun onResponse(call: Call, response: Response) {
             if (response.isSuccessful) {
-                Log.e("response", response.toString())
+
+                val jsonResponse = JSONObject(response.body?.string() ?: "")
+                Log.e("response", jsonResponse.toString())
+
                 val carsReceived = try {
-                    JSONObject(response.body?.string() ?: "").getJSONArray("classification")
+                    jsonResponse.getJSONArray("text")
+                } catch (e: JSONException) {
+                    JSONArray()
+                }
+               val pricesReceived = try {
+                   jsonResponse.getJSONArray("prices")
+                } catch (e: JSONException) {
+                    JSONArray()
+                }
+                val imagesReceived = try {
+                    jsonResponse.getJSONArray("image")
                 } catch (e: JSONException) {
                     JSONArray()
                 }
                 Log.e("cars: ", carsReceived.toString())
+                Log.e("prices: ", pricesReceived.toString())
+                Log.e("images: ", imagesReceived.toString())
 
                 suggestions.clear()
+
                 for (i in 0 until carsReceived.length()) {
                     val carEntry = carsReceived[i]
                     val split = carEntry.toString().split(",")
-                    val carName = split[0]
+                    var carName = split[0]
                     var prob = split[1].removeRange(0,5)
                     prob = prob.trimStart()
                     while (prob.length > 7) {
@@ -92,6 +108,10 @@ fun postCar(context: Context, imageUri: Uri?,
                     var newSuggestion = Suggestion()
                     newSuggestion.carName = carName
                     newSuggestion.probability = prob
+                    newSuggestion.carCost = pricesReceived[i].toString()
+                    newSuggestion.carImageUri = imagesReceived[i].toString().replace("""\/""", "/")
+                    Log.e("image", newSuggestion.carImageUri.toString())
+                    Log.e("car_cost", newSuggestion.carCost.toString())
                     suggestions.add(newSuggestion)
 
                 }
