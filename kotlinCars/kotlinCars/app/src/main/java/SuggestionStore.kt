@@ -2,6 +2,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableBoolean
 import okhttp3.*
 import okio.IOException
 import org.json.JSONArray
@@ -18,15 +19,17 @@ import kotlin.reflect.full.declaredMemberProperties
 object SuggestionStore {
 private const val serverUrl = "https://18.218.44.128/"
 private val nFields = Suggestion::class.declaredMemberProperties.size
+    var hasFailed = ObservableBoolean()
     val suggestions = ObservableArrayList<Suggestion?>()
 fun postCar(context: Context, imageUri: Uri?,
             completion: (String) -> Unit) {
 
+    hasFailed = ObservableBoolean(false)
     suggestions.clear()
     val client = OkHttpClient().newBuilder()
-        .connectTimeout(30, TimeUnit.SECONDS)
-        .writeTimeout(30, TimeUnit.SECONDS)
-        .readTimeout(30, TimeUnit.SECONDS)
+        .connectTimeout(20, TimeUnit.SECONDS)
+        .writeTimeout(20, TimeUnit.SECONDS)
+        .readTimeout(20, TimeUnit.SECONDS)
         .build()
 
     // Add image to post form
@@ -52,6 +55,8 @@ fun postCar(context: Context, imageUri: Uri?,
 
         override fun onFailure(call: Call, e: IOException) {
             Log.e("postcar", "Failed POST request")
+            suggestions.add(Suggestion())
+            suggestions.removeAt(0)
         }
 
         override fun onResponse(call: Call, response: Response) {

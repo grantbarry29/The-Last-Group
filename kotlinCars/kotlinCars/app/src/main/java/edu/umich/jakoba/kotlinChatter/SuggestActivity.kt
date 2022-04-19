@@ -10,13 +10,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
-import Suggestion
 import edu.umich.jakoba.kotlinChatter.databinding.ActivitySuggestBinding
 import SuggestionStore
 import SuggestionStore.suggestions
 import android.util.Log
-import android.view.View.GONE
-import android.widget.Adapter
+import android.widget.Toast
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableList
 
@@ -27,9 +25,7 @@ class SuggestActivity: AppCompatActivity() {
     private lateinit var forCameraResult: ActivityResultLauncher<Uri>
     private lateinit var view: ActivitySuggestBinding
     private lateinit var SuggestionListAdapter: AdapterSuggestion
-    //private val suggestions: ArrayList<Suggestion?> = ArrayList()
     private val suggestionIntents: ArrayList<Intent>? = null
-    // Create listview adapter
 
     // Move to home page and send image back
     private fun toHome(view: View?) {
@@ -109,6 +105,7 @@ class SuggestActivity: AppCompatActivity() {
 
     }
 
+
     // Property observer to check for api replies
     private val propertyObserver = object: ObservableList.OnListChangedCallback<ObservableArrayList<Int>>() {
         override fun onChanged(sender: ObservableArrayList<Int>?) { }
@@ -119,8 +116,15 @@ class SuggestActivity: AppCompatActivity() {
             itemCount: Int
         ) {
             runOnUiThread {
+                Log.e("observer", "hey there")
                 SuggestionListAdapter.setInvis(view.loadingPanel)
                 SuggestionListAdapter.notifyDataSetChanged()
+                if (suggestions.size == 0) {
+                    val duration = Toast.LENGTH_LONG
+                    val text = "We are experiencing Heavy traffic. Please wait 30 seconds and try again."
+                    val toast = Toast.makeText(applicationContext, text, duration)
+                    toast.show()
+                }
             }
         }
         override fun onItemRangeMoved(sender: ObservableArrayList<Int>?, fromPosition: Int, toPosition: Int,

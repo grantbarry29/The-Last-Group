@@ -1,19 +1,6 @@
 import android.net.Uri
 
 import android.view.ViewGroup
-
-import android.view.LayoutInflater
-
-import android.content.Context
-import android.graphics.Color
-import android.view.View
-
-import android.widget.ArrayAdapter
-import coil.load
-import edu.umich.jakoba.kotlinChatter.R
-
-import edu.umich.jakoba.kotlinChatter.databinding.ListitemSuggestionBinding
-
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 

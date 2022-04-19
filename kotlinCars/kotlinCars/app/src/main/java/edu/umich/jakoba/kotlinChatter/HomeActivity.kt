@@ -90,14 +90,13 @@ class HomeActivity: AppCompatActivity() {
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
                 results.forEach {
                     if (!it.value) {
-                        //toast("${it.key} access denied")
+                        toast("${it.key} access denied")
                         if (it.key == Manifest.permission.CAMERA) {
                             markButtonDisable(view.cameraButton)
                         }
                         if (it.key == Manifest.permission.READ_EXTERNAL_STORAGE) {
                             markButtonDisable(view.cameraButton)
                         }
-                        //finish()
                     }
                 }
             }.launch(
@@ -222,11 +221,6 @@ class HomeActivity: AppCompatActivity() {
     }
 
     private fun doCrop(intent: Intent?) {
-     /*  intent ?: run {
-            // viewState.imageUri?.let { view.previewImage.display(it) }
-            return
-        }*/
-
         viewState.imageUri?.let {
             intent?.data = it
             forCropResult.launch(intent)

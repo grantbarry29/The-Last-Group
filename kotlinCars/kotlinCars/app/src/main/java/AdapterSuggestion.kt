@@ -35,16 +35,13 @@ class AdapterSuggestion(context: Context, suggestions: ArrayList<Suggestion?>) :
             // set text
             listItemView.suggestionText.text = carName
 
-            // set background border
             // set swapping background color
             listItemView.root.setBackgroundColor(Color.parseColor(if (position % 2 == 0) "#E2E2E2" else "#D9D9D9"))
             listItemView.root.clipToOutline = true
 
             // show image
             Log.e("uri: ",carImageUri.toString())
-            /*carImageUri?.let {
 
-            }*/
             listItemView.suggestionImage.load(carImageUri){
                 crossfade(true)
                 crossfade(1000)
